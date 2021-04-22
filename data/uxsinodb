@@ -1,0 +1,121 @@
+#! /bin/sh
+
+# chkconfig: 2345 98 02
+# description: uxsinodb RDBMS
+
+# This is an example of a start/stop script for SysV-style init, such
+# as is used on Linux systems.  You should edit some of the variables
+# and maybe the 'echo' commands.
+#
+# Place this file at /etc/init.d/uxsinodb (or
+# /etc/rc.d/init.d/uxsinodb) and make symlinks to
+#   /etc/rc.d/rc0.d/K02uxsinodb
+#   /etc/rc.d/rc1.d/K02uxsinodb
+#   /etc/rc.d/rc2.d/K02uxsinodb
+#   /etc/rc.d/rc3.d/S98uxsinodb
+#   /etc/rc.d/rc4.d/S98uxsinodb
+#   /etc/rc.d/rc5.d/S98uxsinodb
+# Or, if you have chkconfig, simply:
+# chkconfig --add uxsinodb
+#
+# Proper init scripts on Linux systems normally require setting lock
+# and pid files under /var/run as well as reacting to network
+# settings, so you should treat this with care.
+# contrib/start-scripts/linux
+
+## EDIT FROM HERE
+
+# Installation prefix
+prefix=/home/uxdb/uxdbinstall/dbsql
+
+# Data directory
+UXDATA="/home/uxdb/uxdbinstall/dbsql/data"
+
+# Who to run the uxmaster as, usually "uxdb".  (NOT "root")
+UXUSER=uxdb
+
+# Where to keep a log file
+UXLOG="$UXDATA/serverlog"
+
+# It's often a good idea to protect the uxmaster from being killed by the
+# OOM killer (which will tend to preferentially kill the uxmaster because
+# of the way it accounts for shared memory).  To do that, uncomment these
+# three lines:
+PL_OOM_ADJUST_FILE=/proc/self/oom_score_adj
+PL_MASTER_OOM_SCORE_ADJ=-1000
+PL_CHILD_OOM_SCORE_ADJ=0
+# Older Linux kernels may not have /proc/self/oom_score_adj, but instead
+# /proc/self/oom_adj, which works similarly except for having a different
+# range of scores.  For such a system, uncomment these three lines instead:
+#PL_OOM_ADJUST_FILE=/proc/self/oom_adj
+#PL_MASTER_OOM_SCORE_ADJ=-17
+#PL_CHILD_OOM_SCORE_ADJ=0
+
+## STOP EDITING HERE
+
+# The path that is to be used for the script
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# What to use to start up the uxmaster.  (If you want the script to wait
+# until the server has started, you could use "ux_ctl start" here.)
+DAEMON="$prefix/bin/uxmaster"
+
+# What to use to shut down the uxmaster
+UXCTL="$prefix/bin/ux_ctl"
+
+set -e
+
+# Only start if we can find the uxmaster.
+test -x $DAEMON ||
+{
+	echo "$DAEMON not found"
+	if [ "$1" = "stop" ]
+	then exit 0
+	else exit 5
+	fi
+}
+
+# If we want to tell child processes to adjust their OOM scores, set up the
+# necessary environment variables.  Can't just export them through the "su".
+if [ -e "$PL_OOM_ADJUST_FILE" -a -n "$PL_CHILD_OOM_SCORE_ADJ" ]
+then
+	DAEMON_ENV="PL_OOM_ADJUST_FILE=$PL_OOM_ADJUST_FILE PL_OOM_ADJUST_VALUE=$PL_CHILD_OOM_SCORE_ADJ"
+fi
+
+
+# Parse command line parameters.
+case $1 in
+  start)
+	echo -n "Starting uxsinodb: "
+	test -e "$PL_OOM_ADJUST_FILE" && echo "$PL_MASTER_OOM_SCORE_ADJ" > "$PL_OOM_ADJUST_FILE"	
+	su - $UXUSER -c "$DAEMON_ENV $DAEMON -D '$UXDATA' >>$UXLOG 2>&1 &"
+	echo "ok"
+	;;
+  stop)
+	echo -n "Stopping uxsinodb: "
+	su - $UXUSER -c "$UXCTL stop -D '$UXDATA' -s"
+	echo "ok"
+	;;
+  restart)
+	echo -n "Restarting uxsinodb: "
+	su - $UXUSER -c "$UXCTL stop -D '$UXDATA' -s"
+	test -e "$PL_OOM_ADJUST_FILE" && echo "$PL_MASTER_OOM_SCORE_ADJ" > "$PL_OOM_ADJUST_FILE"
+	su - $UXUSER -c "$DAEMON_ENV $DAEMON -D '$UXDATA' >>$UXLOG 2>&1 &"
+	echo "ok"
+	;;
+  reload)
+	echo -n "Reload uxsinodb: "
+	su - $UXUSER -c "$UXCTL reload -D '$UXDATA' -s"
+	echo "ok"
+	;;
+  status)
+	su - $UXUSER -c "$UXCTL status -D '$UXDATA'"
+	;;
+  *)
+	# Print help
+	echo "Usage: $0 {start|stop|restart|reload|status}" 1>&2
+	exit 1
+	;;
+esac
+
+exit 0
