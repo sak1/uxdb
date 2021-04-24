@@ -2,7 +2,7 @@
 
 ## SQL转储
 
-SQL转储是创建一个由SQL命令组成的文件，重建与转储时状态一样的数据库。恢复时执行这些命令，从而恢复数据。
+SQL转储是创建一个由SQL命令组成的文件，重建与转储时状态一样的数据库，恢复时执行这些命令，从而恢复数据。
 
 UXDB提供了工具ux_dump。基本用法是：
 
@@ -10,11 +10,9 @@ UXDB提供了工具ux_dump。基本用法是：
 ux_dump dbname > dumpfile
 ```
 
+### 备份：
 
-
-### SQL转储备份：
-
-1 先建个目录存储用于备份文件
+1 先建个目录，用于存储备份文件
 
 ```
 mkdir /home/uxdb/bak
@@ -26,7 +24,7 @@ mkdir /home/uxdb/bak
 ux_dump uxdb > /home/uxdb/bak/uxdb
 ```
 
-3 查看
+3 查看下转储结果
 
 ```
 ll /home/uxdb/bak
@@ -36,11 +34,11 @@ total 140648
 
 成功
 
-### SQL转储恢复
+### 恢复
 
 基本用法：uxsql dbname < dumpfile
 
-1 登录数据库，删除uxdb库
+1 登录数据库，删除原uxdb库
 
 ```
 $./uxsql
@@ -48,7 +46,7 @@ $./uxsql
 ```
 
 ```sql
-删除uxdb库是危险，小心操作
+/*删库动作是危险，确认再确认后操作*/
 #drop database uxdb; 
 #create database uxdb; 
 #\q
@@ -69,11 +67,13 @@ COPY 911201
 
 成功
 
-### SQL转储全库数据备份
+## 转储全库数据
 
-ux_dump每次只转储一个数据库，而且不会转储角色或表空间）的信息。为了支持便捷地转储一个数据库的全部内容。ux_dumpall备份给定集群中的每个
-表空间定义。保留了集群内的所有数据。基本用法是：
+ux_dump每次只转储一个数据库，而且不会转储角色或表空间。为了支持便捷地转储一个数据库的全部内容。ux_dumpall备份给定集群中的每个表空间定义。保留了集群内的所有数据。基本用法是：
+
+```
 ux_dumpall > dumpfile
+```
 
 如：
 
@@ -91,9 +91,15 @@ uxdb=>ll /home/uxdb/bak
 
 > 注意：需要执行 1 登录数据库，删除uxdb库，参考上面的操作
 
-### SQL转储全库数据恢复
+### 全库数据恢复
 
-可以使用uxsql恢复：uxsql -f dumpfile dbname
+可以使用uxsql恢复，用法
+
+```
+uxsql -f dumpfile dbname
+```
+
+示例：
 
 ```
 ./uxsql -f /home/uxdb/bak/data0304 uxdb
