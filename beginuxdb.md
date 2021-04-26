@@ -1,6 +1,6 @@
 # UXDB实例
 
-## 常见的库表操作示例
+## 常见的库表操作
 
 ### 建库
 ~~~sql
@@ -108,7 +108,7 @@ CALL insert_data(1, 2);
 
 #### 查看存储过程
 ```sql
-select * from ux_proc；
+select * from ux_proc;
 ```
 
 ------
