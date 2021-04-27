@@ -10,37 +10,37 @@
 
 **1 左联接 **
 
-<img src="D:\github\sak1\uxdb\img\i1.gif" style="zoom:50%;" />  SELECT <select list> FROM TableA A LEFT JOIN TableB B ON A.Key= B.Key;
+<img src="img\i1.gif" style="zoom:50%;" />  SELECT <select list> FROM TableA A LEFT JOIN TableB B ON A.Key= B.Key;
 
 ------
 
 **2 右联接**
-<img src="D:\github\sak1\uxdb\img\i2.gif" style="zoom:50%;" /> SELECT <select list> FROM TableA A RIGHT JOIN TableB B ON A.Key B.Key;
+<img src="img\i2.gif" style="zoom:50%;" /> SELECT <select list> FROM TableA A RIGHT JOIN TableB B ON A.Key B.Key;
 
 ------
 
 **3 子集**
-<img src="D:\github\sak1\uxdb\img\i3.gif" style="zoom:50%;" />SELECT <select list> FROM TableA A INNER JOIN TableB B ON A.Key=B.Key;
+<img src="img\i3.gif" style="zoom:50%;" />SELECT <select list> FROM TableA A INNER JOIN TableB B ON A.Key=B.Key;
 
 ------
 
 **4 合集**
-<img src="D:\github\sak1\uxdb\img\i4.gif" style="zoom:50%;" />SELECT <select list> FROM TableA A FULL OUTER JOIN TableB B ON A.Key= B.Key;
+<img src="img\i4.gif" style="zoom:50%;" />SELECT <select list> FROM TableA A FULL OUTER JOIN TableB B ON A.Key= B.Key;
 
 ------
 
 **5 子集除外**
-<img src="D:\github\sak1\uxdb\img\i5.gif" style="zoom:50%;" />SELECT <select list> FULL OUTER JOIN TableB B ON A.Key=B.Key WHERE A.Key IS NULL OR B.Key IS NULL;
+<img src="img\i5.gif" style="zoom:50%;" />SELECT <select list> FULL OUTER JOIN TableB B ON A.Key=B.Key WHERE A.Key IS NULL OR B.Key IS NULL;
 
 ------
 
 **6 相对补集 A \B**
-<img src="D:\github\sak1\uxdb\img\i6.gif" style="zoom:50%;" />SELECT <select list> FROM TableA A LEFT JOIN TableB B ON AKey=B.Key WHERE B.Key IS NULL;
+<img src="img\i6.gif" style="zoom:50%;" />SELECT <select list> FROM TableA A LEFT JOIN TableB B ON AKey=B.Key WHERE B.Key IS NULL;
 
 ****
 
 **7 相对补集 B \ A** 
-<img src="D:\github\sak1\uxdb\img\i7.gif" style="zoom:50%;" />SELECT <select list> FROM TableA A RIGHT JOIN TableB B ON A.Key= B.Key WHERE A.Key IS NULL;
+<img src="img\i7.gif" style="zoom:50%;" />SELECT <select list> FROM TableA A RIGHT JOIN TableB B ON A.Key= B.Key WHERE A.Key IS NULL;
 
 ------
 
