@@ -34,7 +34,7 @@ UXDB(uxsinoDB)是国内新生的商业数据库，为增进大家对这款数据
 29. [数据类型详解](datatype.md)
 30. [数据类型转换的三种方法](convertdatatype.md)
 31. [JSON数据的操作](json1.md)
-31. [摆弄下集合join](joins.md)
+31. [集合分类与写法](joins.md)
 32. [用户与角色详解](userrole.md)
 33. [批量建数据的两种方法](batchinsert.md)
 34. [事务隔离机制与并发解析](mvcc.md)

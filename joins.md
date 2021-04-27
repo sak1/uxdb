@@ -1,10 +1,10 @@
 # UXDB实例
 
-## 集合
+## 集合分类与写法
 
-集合是指具有某种特定属性的事物的总体，有点抽象，比如：一大群人，有男有女，我们要找出20岁的人，20岁就是“特定属性”，这群20岁的人就是“集合”的一种。每一种集合代表了一种选择，只是根据业务的需要，集合之间并无高下优劣之分。相对较难的倒不是概念，而是各种join的写法，下面的七种范式代表七种集合：
+集合是指具有某种特定属性的事物的总体，有点抽象，比如：一大群人，有男有女，我们要找出20岁的人，20岁就是“特定属性”，这群20岁的人就是“集合”的一种。每一种集合代表了一种选择，只是根据业务的需要，集合之间并无高下优劣之分。相对较难的倒不是概念，而是各种join的写法，下面是七种集合：
 
-### 七种范式
+### 七种集合
 
 ------
 
@@ -96,7 +96,7 @@ SELECT <select list> FROM TableA A RIGHT JOIN TableB B ON A.Key= B.Key WHERE A.K
 
 ### 模拟数据
 
-表A site：网站信息
+#### 表A site：网站信息
 
 ```sql
 create table site(id serial PRIMARY KEY,name varchar(20), alexa int,country varchar(20));   
@@ -123,7 +123,7 @@ SELECT * FROM site;
 (6 rows)
 ```
 
-表B log：访问记录
+#### 表B log：访问记录
 
 ```sql
 create table log(aid serial,site_id int,acount int,adate DATE);
@@ -158,7 +158,7 @@ SELECT * FROM log;
 
 以下是对两表联合查询，显示网站访问量的不同情况
 
-#### **1 左联接 **  以站名为准，显示每个站的访问情况，没访问量也算上
+#### 1 左联接  以站名为准，显示每个站的访问情况，没访问量也算
 
 ```sql
 SELECT A.name,B.acount,B.adate FROM site A LEFT JOIN log B ON A.id= B.site_id;
@@ -176,7 +176,7 @@ SELECT A.name,B.acount,B.adate FROM site A LEFT JOIN log B ON A.id= B.site_id;
 (9 rows)
 ```
 
-#### **2 右联接 **  以记录为准，显示每个访问记录，没站名也算上
+#### 2 右联接  以记录为准，显示每个访问记录，没站名也算
 
 ```sql
 SELECT A.name,B.acount,B.adate FROM site A RIGHT JOIN log B ON A.id=B.site_id;
@@ -194,7 +194,7 @@ SELECT A.name,B.acount,B.adate FROM site A RIGHT JOIN log B ON A.id=B.site_id;
 (9 rows)
 ```
 
-#### **3 子集**  显示信息完整的（有站名+有记录）， 相当于优选，只要完整的
+#### 3 子集  显示信息完整的（有站名+有记录）， 相当于优选，只要完整的
 
 ```sql
 SELECT A.name,B.acount,B.adate FROM site A INNER JOIN log B ON A.id=B.site_id;
@@ -212,7 +212,7 @@ SELECT A.name,B.acount,B.adate FROM site A INNER JOIN log B ON A.id=B.site_id;
 
 ```
 
-#### **4 合集**  显示所有的，好不好都要。
+#### **4 合集**  显示所有的，好不好都要
 
 ```sql
 SELECT A.name,B.acount,B.adate FROM site A FULL OUTER JOIN log B ON A.id=B.site_id;
@@ -232,7 +232,7 @@ SELECT A.name,B.acount,B.adate FROM site A FULL OUTER JOIN log B ON A.id=B.site_
 
 ```
 
-#### **5 子集除外**  显示不完整的，有站名无记录+有记录无站名，求缺是也。
+#### 5 子集除外  显示不完整的，有站名无记录+有记录无站名，求缺是也。
 
 ```sql
 SELECT A.name,B.acount,B.adate from site A FULL OUTER JOIN log B ON A.id=B.site_id WHERE A.id IS NULL OR B.aid IS NULL;
@@ -244,7 +244,7 @@ SELECT A.name,B.acount,B.adate from site A FULL OUTER JOIN log B ON A.id=B.site_
 
 ```
 
-#### **6 相对补集 A \ B**  显示有站名无记录的那个
+#### 6 相对补集 A \ B  显示有站名无记录的那部分
 
 ```sql
 SELECT A.name,B.acount,B.adate FROM site A LEFT JOIN log B ON A.id=B.site_id WHERE B.aid IS NULL;
@@ -255,7 +255,7 @@ SELECT A.name,B.acount,B.adate FROM site A LEFT JOIN log B ON A.id=B.site_id WHE
 
 ```
 
-#### **7 相对补集 B \ A** 显示有记录无站名的那个
+#### 7 相对补集 B \ A 显示有记录无站名的那部分
 
 ```sql
 SELECT A.name,B.acount,B.adate FROM site A RIGHT JOIN log B ON A.id=B.site_id WHERE A.id IS NULL;
