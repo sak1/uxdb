@@ -86,17 +86,16 @@ insert into account (id, name, password, description) values (1, 'user1', 'HASH1
 select * from account;
 ```
 
-```shell
-tailf ../data/log/uxsinodb-2021-04-26_180943.log 
-```
+查看日志
 
 ```
+tailf ../data/log/uxsinodb-2021-04-26_180943.log 
 2021-04-26 19:03:21.956 CST [6032] LOG:  AUDIT: SESSION,1,1,DDL,CREATE TABLE,TABLE,public.account,"create table account(id int,name text,password text,description text);",<none>
 2021-04-26 19:03:26.797 CST [6032] LOG:  AUDIT: SESSION,2,1,WRITE,INSERT,TABLE,public.account,"insert into account (id, name, password, description) values (1, 'user1', 'HASH1', 'blah, blah');",<none>
 2021-04-26 19:03:30.944 CST [6032] LOG:  AUDIT: SESSION,3,1,READ,SELECT,TABLE,public.account,select * from account;,<none>
 ```
 
-### 日志自动覆盖
+### 补充修改配置，日志自动覆盖，防止存储过大
 
 为了防止日志存储过大，导致磁盘占满。您可以通过修改uxsinodb.conf中的参数来实现，需要重启数据库
 
