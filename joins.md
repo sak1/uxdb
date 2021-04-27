@@ -8,7 +8,7 @@
 
 ------
 
-**1 左联接 **
+#### 1 左联接
 
 <img src="img\i1.gif" style="zoom:40%;" />  
 
@@ -20,7 +20,8 @@ SELECT <select list> FROM TableA A LEFT JOIN TableB B ON A.Key= B.Key;
 
 ------
 
-**2 右联接**
+#### 2 右联接
+
 <img src="img\i2.gif" style="zoom:40%;" /> 
 
 ```sql
@@ -31,7 +32,8 @@ SELECT <select list> FROM TableA A RIGHT JOIN TableB B ON A.Key B.Key;
 
 ------
 
-**3 子集**
+#### 3 子集
+
 <img src="img\i3.gif" style="zoom:40%;" />
 
 ```sql
@@ -42,7 +44,8 @@ SELECT <select list> FROM TableA A INNER JOIN TableB B ON A.Key=B.Key;
 
 ------
 
-**4 合集**
+#### 4 合集
+
 <img src="img\i4.gif" style="zoom:40%;" />
 
 ```sql
@@ -53,7 +56,8 @@ SELECT <select list> FROM TableA A FULL OUTER JOIN TableB B ON A.Key= B.Key;
 
 ------
 
-**5 子集除外**
+#### 5 子集除外
+
 <img src="img\i5.gif" style="zoom:40%;" />
 
 ```sql
@@ -64,7 +68,8 @@ SELECT <select list> FULL OUTER JOIN TableB B ON A.Key=B.Key WHERE A.Key IS NULL
 
 ------
 
-**6 相对补集 A \B**
+#### 6 相对补集 A \B
+
 <img src="img\i6.gif" style="zoom:40%;" />
 
 ```sql
@@ -75,7 +80,8 @@ SELECT <select list> FROM TableA A LEFT JOIN TableB B ON AKey=B.Key WHERE B.Key 
 
 ****
 
-**7 相对补集 B \ A** 
+#### 7 相对补集 B \ A
+
 <img src="img\i7.gif" style="zoom:40%;" />
 
 ```sql
@@ -152,7 +158,7 @@ SELECT * FROM log;
 
 以下是对两表联合查询，显示网站访问量的不同情况
 
-**1 左联接 **  以站名为准，显示每个站的访问情况，没访问量也算上
+#### **1 左联接 **  以站名为准，显示每个站的访问情况，没访问量也算上
 
 ```sql
 SELECT A.name,B.acount,B.adate FROM site A LEFT JOIN log B ON A.id= B.site_id;
@@ -170,7 +176,7 @@ SELECT A.name,B.acount,B.adate FROM site A LEFT JOIN log B ON A.id= B.site_id;
 (9 rows)
 ```
 
-**2 右联接 **  以记录为准，显示每个访问记录，没站名也算上
+#### **2 右联接 **  以记录为准，显示每个访问记录，没站名也算上
 
 ```sql
 SELECT A.name,B.acount,B.adate FROM site A RIGHT JOIN log B ON A.id=B.site_id;
@@ -188,7 +194,7 @@ SELECT A.name,B.acount,B.adate FROM site A RIGHT JOIN log B ON A.id=B.site_id;
 (9 rows)
 ```
 
-**3 子集**  显示信息完整的（有站名+有记录）， 相当于优选，只要完整的
+#### **3 子集**  显示信息完整的（有站名+有记录）， 相当于优选，只要完整的
 
 ```sql
 SELECT A.name,B.acount,B.adate FROM site A INNER JOIN log B ON A.id=B.site_id;
@@ -206,7 +212,7 @@ SELECT A.name,B.acount,B.adate FROM site A INNER JOIN log B ON A.id=B.site_id;
 
 ```
 
-**4 合集**  显示所有的，好不好都要。
+#### **4 合集**  显示所有的，好不好都要。
 
 ```sql
 SELECT A.name,B.acount,B.adate FROM site A FULL OUTER JOIN log B ON A.id=B.site_id;
@@ -226,7 +232,7 @@ SELECT A.name,B.acount,B.adate FROM site A FULL OUTER JOIN log B ON A.id=B.site_
 
 ```
 
-**5 子集除外**  显示不完整的，有站名无记录+有记录无站名，求缺是也。
+#### **5 子集除外**  显示不完整的，有站名无记录+有记录无站名，求缺是也。
 
 ```sql
 SELECT A.name,B.acount,B.adate from site A FULL OUTER JOIN log B ON A.id=B.site_id WHERE A.id IS NULL OR B.aid IS NULL;
@@ -238,7 +244,7 @@ SELECT A.name,B.acount,B.adate from site A FULL OUTER JOIN log B ON A.id=B.site_
 
 ```
 
-**6 相对补集 A \ B**  显示有站名无记录的那个
+#### **6 相对补集 A \ B**  显示有站名无记录的那个
 
 ```sql
 SELECT A.name,B.acount,B.adate FROM site A LEFT JOIN log B ON A.id=B.site_id WHERE B.aid IS NULL;
@@ -249,7 +255,7 @@ SELECT A.name,B.acount,B.adate FROM site A LEFT JOIN log B ON A.id=B.site_id WHE
 
 ```
 
-**7 相对补集 B \ A** 显示有记录无站名的那个
+#### **7 相对补集 B \ A** 显示有记录无站名的那个
 
 ```sql
 SELECT A.name,B.acount,B.adate FROM site A RIGHT JOIN log B ON A.id=B.site_id WHERE A.id IS NULL;
@@ -259,4 +265,5 @@ SELECT A.name,B.acount,B.adate FROM site A RIGHT JOIN log B ON A.id=B.site_id WH
 (1 row)
 ```
 
-还有其它可能吗？思考下哈
+#### 还有其它可能吗？思考下哈
+
